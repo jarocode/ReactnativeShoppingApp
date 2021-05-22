@@ -34,8 +34,15 @@ import ListingsScreen from './app/screens/ListingsScreen';
 import AppTextInput from './app/components/AppTextInput';
 import AppPicker from './app/components/AppPicker';
 
+const categories =  [
+  {label: 'furniture', value: 1},
+  {label: 'clothing', value: 2},
+  {label: 'cameras', value: 3},
+]
+
 export default function App() {
-  const [firstName, setFirstName] = useState('');
+  const [category, setCategory] = useState(categories[0]);
+
   
   console.log('App executed');
   
@@ -43,7 +50,13 @@ export default function App() {
   return (
     
     <Screen>
-      <AppPicker icon="apps" placeholder="Category"/>
+      <AppPicker 
+        items={categories} 
+        icon="apps" 
+        placeholder="Category"
+        selectedItem = {category}
+        onSelectItem = {item =>setCategory(item)}
+      />
       <AppTextInput icon="email" placeholder="Email"/>
     </Screen>
       
