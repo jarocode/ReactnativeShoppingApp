@@ -6,12 +6,21 @@ import AppText from './AppText';
 import Screen from './Screen';
 import PickerItem from './PickerItem';
 
-const AppPicker = ({icon, placeholder, items, selectedItem, onSelectItem}) => {
+const AppPicker = ({
+    icon, 
+    placeholder, 
+    items, 
+    selectedItem, 
+    onSelectItem, 
+    onBlur,
+    numberOfColumns = 1,
+    PickerItemComponent = PickerItem
+}) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     return (
             <Fragment>
-                <TouchableWithoutFeedback onPress ={() => setModalVisible(true)}>
+                <TouchableWithoutFeedback onPress ={() => setModalVisible(true)} onBlur={onBlur}>
                     <View style={styles.container}>
                         {icon && <MaterialCommunityIcons 
                                     name={icon} 
@@ -20,29 +29,35 @@ const AppPicker = ({icon, placeholder, items, selectedItem, onSelectItem}) => {
                                     style={styles.icon}
                                     />
                         }
-                        <AppText style={styles.text}>{selectedItem? selectedItem.label: placeholder}</AppText>
-                        {icon && <MaterialCommunityIcons 
-                                    name= "chevron-down" 
-                                    size={20} 
-                                />
+                        {selectedItem ? 
+                         (<AppText style={styles.text}>{selectedItem.label}</AppText>)
+                         : (<AppText style={styles.placeholder}>{placeholder}</AppText>)
                         }
+                        
+                         <MaterialCommunityIcons 
+                            name= "chevron-down" 
+                            size={20} 
+                        />
+                        
                     </View>
                 </TouchableWithoutFeedback>
                 <Modal visible={modalVisible} animationType="slide">
                     <Screen>
                         <Button title="Close" onPress={() => setModalVisible(false)}/>
                         <FlatList
-                            data={items}
-                            keyExtractor={item => item.value.toString()}
-                            renderItem = {({item}) => 
-                                <PickerItem
-                                    label={item.label}
-                                    onPress={() => {
-                                        setModalVisible(false);
-                                        onSelectItem(item);
-                                    }}
-                                />}
-                        />
+                                data={items}
+                                numColumns= {numberOfColumns}
+                                keyExtractor={item => item.value.toString()}
+                                renderItem = {({item}) => 
+                                    <PickerItemComponent
+                                        item={item}
+                                        onPress={() => {
+                                            setModalVisible(false);
+                                            onSelectItem(item);
+                                        }}
+                                    />}
+                            />
+                        
                     </Screen>
                 </Modal>
             </Fragment>
@@ -64,6 +79,13 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginTop: 4
     },
+
+    
+    placeholder: {
+        color: defaultStyles.colors.medium,
+        flex: 1
+    },
+    
     textInput: {
         fontSize: 18,
         fontFamily: Platform.OS === "android"? "Roboto" : "Avenir",

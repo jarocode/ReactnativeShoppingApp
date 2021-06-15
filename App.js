@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,8 @@ import {
   Platform,
   TextInput
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 
 import {useDimensions, useDeviceOrientation} from '@react-native-community/hooks'
@@ -36,16 +38,52 @@ import AppPicker from './app/components/AppPicker';
 import LoginScreen from './app/screens/LoginScreen';
 import RegisterScreen from './app/screens/RegisterScreen';
 import ListEditScreen from './app/screens/ListEditScreen';
+import ImageInput from './app/components/ImageInput';
+import ImageInputList from './app/components/ImageInputList';
 
 export default function App() {
- 
-  return (
-    
-    <ListEditScreen/>
-      
+  const [imageUris, setImageUris] = useState([0]);
 
-      
+  const requestPermission = async() => {
+    const {granted, status} = await ImagePicker.requestCameraPermissionsAsync();
+    console.log(granted, status)
+    !granted && alert('you need to enable permission to access the library');
+
+  }
+  
+  useEffect(() => {
+    requestPermission();
+  },[]);
+
+  // useEffect(() => {
+  //   console.log(imageUris)
+  // },[imageUris]);
+
+  const onAddImage = async (uri) => {
+    
+    try {
+      const result =  await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancelled) setImageUris(prev => {
+        if(prev[0] === 0){
+          return [result.uri];
+        }else{
+          return [...prev, result.uri];
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
    
+  }
+  
+  return (
+    <Screen>
+        {/* <Button title="select image" onPress={selectImage}/>
+        <Image source= {{uri: imageUri}} width={200} height={200}/> */}
+        {/* <ImageInput imageUri={imageUri} onChangeImage={selectImage}/> */}
+        <ImageInputList imageUris= {imageUris} onAddImage={onAddImage} onRemoveImage={{}}/>
+    </Screen>
+    
   );
 }
 

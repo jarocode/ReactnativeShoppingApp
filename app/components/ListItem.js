@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableHighlight } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 import colors from '../config/colors';
+import defaultStyles from '../config/styles';
 import AppText from './AppText';
 
 
 
-const ListItem = ({title, subTitle, image, IconComponent, onPress, renderRightActions}) => {
+const ListItem = ({title, subTitle, image, IconComponent, onPress, renderRightActions, showChevrons = true}) => {
     return (
         <Swipeable renderRightActions={renderRightActions}>
             <TouchableHighlight onPress={onPress} underlayColor={colors.light}>
@@ -15,9 +17,17 @@ const ListItem = ({title, subTitle, image, IconComponent, onPress, renderRightAc
                     {IconComponent}
                     {image && <Image style={styles.image} source={image}/>}
                     <View style={styles.detailsContainer}>
-                        <AppText style={styles.title}>{title}</AppText>
-                        {subTitle && <AppText style={styles.subTitle}>{subTitle}</AppText>}
+                        <AppText style={styles.title} numberOfLines={1}>{title}</AppText>
+                        {subTitle && <AppText style={styles.subTitle} numberOfLines={2}>{subTitle}</AppText>}
                     </View>
+                    {showChevrons && <MaterialCommunityIcons 
+                                        name= 'chevron-right'
+                                        color={defaultStyles.colors.medium} 
+                                        size={20} 
+                                        style={styles.icon}
+                                    />
+                    }
+                    
                 </View>
             </TouchableHighlight>
         </Swipeable>
@@ -27,14 +37,23 @@ const ListItem = ({title, subTitle, image, IconComponent, onPress, renderRightAc
 export default ListItem;
 const styles = StyleSheet.create({
     container: {
+        alignItems: 'center',
         flexDirection: 'row',
         padding: 15,
         backgroundColor: colors.white
     },
     detailsContainer: {
         marginLeft: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex: 1
     },
+
+    
+    icon: {
+        
+    },
+
+    
     image: {
         width: 70,
         height: 70,
