@@ -42,49 +42,47 @@ import ImageInput from './app/components/ImageInput';
 import ImageInputList from './app/components/ImageInputList';
 
 export default function App() {
-  // const [imageUris, setImageUris] = useState([0]);
-  const [imageUris, setImageUris] = useState([]);
+//   // const [imageUris, setImageUris] = useState([0]);
+//   const [imageUris, setImageUris] = useState([]);
 
  
 
-  // useEffect(() => {
-  //   console.log(imageUris);
-  // },[imageUris]);
+//   // useEffect(() => {
+//   //   console.log(imageUris);
+//   // },[imageUris]);
 
-  // const onAddImage = async (uri) => {
+//   // const onAddImage = async (uri) => {
     
-  //   try {
-  //     const result =  await ImagePicker.launchImageLibraryAsync({
-  //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  //       quality: 0.5
-  //     });
-  //     if (!result.cancelled) setImageUris(prev => {
-  //       if(prev[0] === 0){
-  //         return [result.uri];
-  //       }else{
-  //         return [...prev, result.uri];
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+//   //   try {
+//   //     const result =  await ImagePicker.launchImageLibraryAsync({
+//   //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+//   //       quality: 0.5
+//   //     });
+//   //     if (!result.cancelled) setImageUris(prev => {
+//   //       if(prev[0] === 0){
+//   //         return [result.uri];
+//   //       }else{
+//   //         return [...prev, result.uri];
+//   //       }
+//   //     });
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //   }
    
-  // }
+//   // }
 
- const handleAdd = (uri) => {
-   setImageUris([...imageUris, uri]);
- }
+//  const handleAdd = (uri) => {
+//    setImageUris([...imageUris, uri]);
+//  }
 
- const handleRemove = (uri) => {
-  setImageUris(imageUris.filter(imageUri => imageUri !== uri));
- }
+//  const handleRemove = (uri) => {
+//   setImageUris(imageUris.filter(imageUri => imageUri !== uri));
+//  }
   
   return (
     <Screen>
-        {/* <Button title="select image" onPress={selectImage}/>
-        <Image source= {{uri: imageUri}} width={200} height={200}/> */}
-        {/* <ImageInput imageUri={imageUri} onChangeImage={(uri) => setImageUri(uri)}/> */}
-        <ImageInputList imageUris= {imageUris} onAddImage={handleAdd} onRemoveImage={handleRemove}/>
+       
+        <ListEditScreen/>
     </Screen>
     
   );
