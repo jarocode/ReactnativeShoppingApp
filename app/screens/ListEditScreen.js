@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image } from 'react-native';
 import * as Yup from 'yup';
+import * as Location from 'expo-location';
 
 import Screen from '../components/Screen';
 import CategoryPickerItem from '../components/CategoryPickerItem';
@@ -72,7 +73,19 @@ const validationSchema = Yup.object().shape({
 });
 
 const ListEditScreen = () => {
-    return (
+  const [location, setLocation] = useState();
+  const getLocation = async ()=> {
+    const {granted} = await Location.requestPermissionsAsync();
+    if (!granted) return;
+    const {coords: {latitude, longitude}} = await Location.getLastKnownPositionAsync();
+    setLocation({latitude, longitude});
+  }
+  
+  useEffect(() => {
+    getLocation();
+  }, [])
+  
+  return (
         <Screen style={styles.container}>
             <AppForm
                 initialValues={
@@ -84,7 +97,7 @@ const ListEditScreen = () => {
                         images: []
                     }
                 }
-                onSubmit={values => console.log(values)}
+                onSubmit={values => console.log(location)}
                 validationSchema={validationSchema}
             >
 
