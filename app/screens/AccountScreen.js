@@ -6,6 +6,7 @@ import ListItem from '../components/ListItem';
 import ListItemSeparatorComponent from '../components/ListItemSeparator';
 import colors from '../config/colors';
 import Icon from '../components/Icon';
+import navigationTheme from '../navigation/navigationTheme';
 
 const menuItems = [
     {
@@ -20,11 +21,12 @@ const menuItems = [
         icon: {
             name: "email",
             backgroundColor: colors.secondary
-        }
+        },
+        targetScreen: "Messages"
     },
 ]
 
-const AccountScreen = () => {
+const AccountScreen = ({navigation}) => {
     return (
         
             <Screen style={styles.screen}>
@@ -42,13 +44,14 @@ const AccountScreen = () => {
                         ItemSeparatorComponent = {ListItemSeparatorComponent}
                         renderItem={({item}) =>
                         <ListItem
-                        title={item.title}
-                        IconComponent={
-                            <Icon 
-                            name={item.icon.name}
-                            backgroundColor={item.icon.backgroundColor}/>
-                        }/>}
-                    />
+                            title={item.title}
+                            IconComponent={
+                                <Icon 
+                                name={item.icon.name}
+                                backgroundColor={item.icon.backgroundColor}/>
+                            }/>}
+                            onPress = {() => navigation.navigate(item.targetScreen)}
+                        />
                 </View>
                 <ListItem
                     title="Log Out"
