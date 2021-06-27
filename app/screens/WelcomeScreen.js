@@ -4,7 +4,7 @@ import BackgroundImg from '../assets/background.jpg';
 import Logo from '../assets/logo-red.png';
 import AppButton from '../components/AppButton';
 
-function WelcomeScreen(props) {
+function WelcomeScreen({navigation}) {
     return (
         <ImageBackground 
         source={BackgroundImg} 
@@ -16,8 +16,8 @@ function WelcomeScreen(props) {
                 <Text style={styles.tagLine}>Sell what you don't need</Text>
             </View>
             <View style={styles.buttonsContainer}>
-                <AppButton title="login"/>
-                <AppButton title="register" color="secondary"/>
+                <AppButton title="login" onPress={() => navigation.navigate('Login')}/>
+                <AppButton title="register" color="secondary" onPress={() => navigation.navigate('Register')}/>
             </View>
         </ImageBackground>
     );

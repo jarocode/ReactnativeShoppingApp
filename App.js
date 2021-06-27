@@ -40,50 +40,89 @@ import RegisterScreen from './app/screens/RegisterScreen';
 import ListEditScreen from './app/screens/ListEditScreen';
 import ImageInput from './app/components/ImageInput';
 import ImageInputList from './app/components/ImageInputList';
+import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import {NavigationContainer} from '@react-navigation/native';
+import AuthNavigator from './app/navigation/AuthNavigator';
+import AppNavigator from './app/navigation/AppNavigator';
+import navigationTheme from './app/navigation/navigationTheme';
+
+const Tweets = ({navigation}) => (
+  <Screen>
+    <Text>Tweets</Text>
+    <Button title="View Tweet" onPress={() => navigation.navigate("TweetDetails", {id: 1})}/>
+  </Screen>
+)
+
+const TweetDetails = ({route}) => (
+  <Screen>
+    <Text>Tweet Details {route.params.id}</Text>
+  </Screen>
+)
+
+const Account = () => (
+  <Screen>
+    <Text>Account</Text>
+  </Screen>
+)
+
+const Stack = createStackNavigator();
+const StackNavigator = () => (
+  <Stack.Navigator 
+    screenOptions={{
+      headerStyle: {backgroundColor: 'dodgerBlue'},
+      headerTintColor: "white"
+    }}
+  >
+    <Stack.Screen 
+      name="Tweets" 
+      component={Tweets}
+      options={{
+        headerStyle: {backgroundColor: 'tomato'},
+        headerTintColor: "white"
+      }}/>
+    <Stack.Screen 
+      name="TweetDetails" 
+      component={TweetDetails}
+      options={({route}) => ({title: route.params.id})}
+    />
+  </Stack.Navigator>
+)
+
+const Tab = createBottomTabNavigator();
+const TabNavigator = () => (
+  <Tab.Navigator
+    tabBarOptions={{
+      activeBackgroundColor: "tomato",
+      activeTintColor: "white",
+      inactiveBackgroundColor: "#eee",
+      inactiveTintColor: "black"
+    }}
+  >
+      <Tab.Screen 
+        name="Feed" 
+        component={StackNavigator}
+        options={{
+          tabBarIcon: ({size, color}) => 
+          <MaterialCommunityIcons 
+            name="home" 
+            size={size} 
+            color={color}
+          />
+        }}
+        />
+      <Tab.Screen name="Account" component={Account}/>
+  </Tab.Navigator>
+);
 
 export default function App() {
-//   // const [imageUris, setImageUris] = useState([0]);
-//   const [imageUris, setImageUris] = useState([]);
-
- 
-
-//   // useEffect(() => {
-//   //   console.log(imageUris);
-//   // },[imageUris]);
-
-//   // const onAddImage = async (uri) => {
-    
-//   //   try {
-//   //     const result =  await ImagePicker.launchImageLibraryAsync({
-//   //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-//   //       quality: 0.5
-//   //     });
-//   //     if (!result.cancelled) setImageUris(prev => {
-//   //       if(prev[0] === 0){
-//   //         return [result.uri];
-//   //       }else{
-//   //         return [...prev, result.uri];
-//   //       }
-//   //     });
-//   //   } catch (error) {
-//   //     console.log(error);
-//   //   }
-   
-//   // }
-
-//  const handleAdd = (uri) => {
-//    setImageUris([...imageUris, uri]);
-//  }
-
-//  const handleRemove = (uri) => {
-//   setImageUris(imageUris.filter(imageUri => imageUri !== uri));
-//  }
+  
   
   return (
-    <Screen>
-       
-        <ListEditScreen/>
-    </Screen>
+    <NavigationContainer theme={navigationTheme}>
+      <AppNavigator/>
+    </NavigationContainer>
     
   );
 }

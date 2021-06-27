@@ -12,4 +12,4 @@ const SubmitButton = ({title}) => {
     )
 }
 
-export default SubmitButton
+export default SubmitButton;
