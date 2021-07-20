@@ -3,9 +3,11 @@ import { StyleSheet, Image } from 'react-native';
 import * as Yup from 'yup';
 
 import Screen from '../components/Screen';
+import listingAPi from '../api/listings'
 import useLocation from '../hooks/useLocation';
 import CategoryPickerItem from '../components/CategoryPickerItem';
 import {AppFormField, AppForm, SubmitButton, AppFormPicker, AppFormImagePicker} from '../components/forms';
+import UploadScreen from './UploadScreen';
 
 const categories = [
     {
@@ -74,9 +76,22 @@ const validationSchema = Yup.object().shape({
 
 const ListEditScreen = () => {
   const location = useLocation();
+  const [uploadVisible, setUploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleSubmit = async (listing) => {
+    setUploadVisible(true);
+    const result = await listingAPi.addListing({...listing, location}, 
+      (progress) => setProgress(progress));
+    setUploadVisible(false);
+    if(!result.ok) return alert('could not save listing');
+    alert('Success');
+    
+  }
   
   return (
         <Screen style={styles.container}>
+          <UploadScreen progress={progress} visible={uploadVisible}/>
             <AppForm
                 initialValues={
                     { 
@@ -87,7 +102,7 @@ const ListEditScreen = () => {
                         images: []
                     }
                 }
-                onSubmit={values => console.log(location)}
+                onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
 
