@@ -79,7 +79,7 @@ const ListEditScreen = () => {
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const handleSubmit = async (listing) => {
+  const handleSubmit = async (listing, {resetForm}) => {
     setProgress(0);
     setUploadVisible(true);
     const result = await listingAPi.addListing({...listing, location}, 
@@ -89,7 +89,8 @@ const ListEditScreen = () => {
       setUploadVisible(false);
       alert('Could not save listing');
     }
-    alert('Success');
+    resetForm();
+
     
   }
   
