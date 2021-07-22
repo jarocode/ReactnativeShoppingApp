@@ -48,6 +48,7 @@ import AuthNavigator from './app/navigation/AuthNavigator';
 import AppNavigator from './app/navigation/AppNavigator';
 import AccountNavigator from './app/navigation/AccountNavigator';
 import navigationTheme from './app/navigation/navigationTheme';
+import OfflineNotice from './app/components/OfflineNotice';
 
 const Tweets = ({navigation}) => (
   <Screen>
@@ -121,9 +122,12 @@ export default function App() {
   
   
   return (
-    <NavigationContainer theme={navigationTheme}>
-      <AppNavigator/>
-    </NavigationContainer>
+    <>
+      <OfflineNotice/>
+      <NavigationContainer theme={navigationTheme}>
+        <AppNavigator/>
+      </NavigationContainer>
+    </>
     
   );
 }
