@@ -18,6 +18,8 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import jwtDecode from 'jwt-decode';
+import AppLoading from 'expo-app-loading';
 
 
 import {useDimensions, useDeviceOrientation} from '@react-native-community/hooks'
@@ -49,6 +51,8 @@ import AppNavigator from './app/navigation/AppNavigator';
 import AccountNavigator from './app/navigation/AccountNavigator';
 import navigationTheme from './app/navigation/navigationTheme';
 import OfflineNotice from './app/components/OfflineNotice';
+import AuthContext from './app/auth/context';
+import authStorage from './app/auth/storage';
 
 const Tweets = ({navigation}) => (
   <Screen>
@@ -119,15 +123,30 @@ const TabNavigator = () => (
 );
 
 export default function App() {
-  
+  const [user, setUser] = useState();
+  const [isReady, setIsReady] = useState();
+
+  if(!isReady) 
+    return <AppLoading 
+            startAsync={restoreToken} 
+            onFinish={() => setIsReady(true)} 
+            onError={console.warn}
+          />
+
+  const restoreToken = async () => {
+    const token = await authStorage.getToken();
+    if(!token) return;
+    setUser(jwtDecode(token));
+  }
+
   
   return (
-    <>
+    <AuthContext.Provider value={{user, setUser}}>
       <OfflineNotice/>
       <NavigationContainer theme={navigationTheme}>
-        <AppNavigator/>
+        {user? <AppNavigator/> : <AuthNavigator/>}
       </NavigationContainer>
-    </>
+    </AuthContext.Provider>
     
   );
 }
