@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,7 +18,6 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import jwtDecode from 'jwt-decode';
 import AppLoading from 'expo-app-loading';
 
 
@@ -128,15 +127,14 @@ export default function App() {
 
   if(!isReady) 
     return <AppLoading 
-            startAsync={restoreToken} 
+            startAsync={restoreUser} 
             onFinish={() => setIsReady(true)} 
             onError={console.warn}
           />
 
-  const restoreToken = async () => {
-    const token = await authStorage.getToken();
-    if(!token) return;
-    setUser(jwtDecode(token));
+  const restoreUser = async () => {
+    const user = await authStorage.getUser();
+    if(user) setUser(user);
   }
 
   

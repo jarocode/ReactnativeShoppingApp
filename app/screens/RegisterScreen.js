@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Image } from 'react-native';
 import * as Yup from 'yup';
 
 import Screen from '../components/Screen';
-import {AppFormField, AppForm, SubmitButton} from '../components/forms';
+import userApi from '../api/users';
+import authApi from '../api/auth';
+import {AppFormField, AppForm, SubmitButton, ErrorMessage} from '../components/forms';
+import useAuth from '../auth/useAuth';
+import useApi from '../hooks/useApi';
+import ActivityIndicator from '../components/ActivityIndicator';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
@@ -12,44 +17,76 @@ const validationSchema = Yup.object().shape({
 });
 
 const RegisterScreen = () => {
-    return (
-        <Screen style={styles.container}>
-            <AppForm
-                initialValues={{ email: '', password: '' }}
-                onSubmit={values => console.log(values)}
-                validationSchema={validationSchema}
-            >
-                <AppFormField
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    icon="profile"
-                    placeholder="Name"
-                    name="name"
-                    textContentType="text"
-                    />
-                <AppFormField
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    icon="email"
-                    placeholder="Email"
-                    name="email"
-                    keyboardType="email-address"
-                    textContentType="emailAddress"
-                    />
-                            
-                <AppFormField
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    icon="lock"
-                    placeholder="Password"
-                    secureTextEntry
-                    textContentType="password"
-                    name="password"
-                /> 
-                 <SubmitButton title="Register"/>
-            </AppForm>
+    const  registerApi =  useApi(userApi.register);
+    const loginApi = useApi(authApi.login);
+    const auth = useAuth();
+    const [error, setError] = useState();
+    const handleSubmit = async (userInfo) => {
+        try {
+            const result = await registerApi.request(userInfo);
 
-        </Screen>
+            if(!result.ok){
+                console.log(result.ok);
+                if(result.data) setError(result.data.error);
+                else {
+                    setError('An unexpected error occurred.');
+                    console.log(result);
+                }
+
+                return;
+            }
+            const {data: authToken} = await loginApi.request(
+                userInfo.email,
+                userInfo.password
+            );
+            auth.logIn(authToken)
+            } catch (error) {
+                console.log(error);
+            }
+    }
+    return (
+        <>
+            <ActivityIndicator visible={registerApi.loading || loginApi.loading}/>
+            <Screen style={styles.container}>
+            
+                <AppForm
+                    initialValues={{ name: "" , email: '', password: '' }}
+                    onSubmit={handleSubmit}
+                    validationSchema={validationSchema}
+                >
+                    <ErrorMessage error={error} visible={true}/>
+                    <AppFormField
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        icon="profile"
+                        placeholder="Name"
+                        name="name"
+                        textContentType="text"
+                        />
+                    <AppFormField
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        icon="email"
+                        placeholder="Email"
+                        name="email"
+                        keyboardType="email-address"
+                        textContentType="emailAddress"
+                        />
+                                
+                    <AppFormField
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        icon="lock"
+                        placeholder="Password"
+                        secureTextEntry
+                        textContentType="password"
+                        name="password"
+                    /> 
+                    <SubmitButton title="Register"/>
+                </AppForm>
+            
+            </Screen>
+        </>
     )
 }
 

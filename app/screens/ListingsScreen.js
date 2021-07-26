@@ -23,6 +23,8 @@ const ListingsScreen = ({navigation}) => {
     
     
     return (
+       <>
+        <ActivityIndicator visible={loading}/>
         <Screen style={styles.screen}>
             {error && (
                 <>
@@ -30,7 +32,7 @@ const ListingsScreen = ({navigation}) => {
                     <AppButton title="retry" onPress={loadListings}/>
                 </>
             )}
-            <ActivityIndicator visible={loading}/>
+            
             <FlatList
                 data={listings}
                 keyExtractor={listing => listing.id.toString()}
@@ -44,6 +46,7 @@ const ListingsScreen = ({navigation}) => {
                     />}
             />
         </Screen>
+       </>
     )
 }
 
