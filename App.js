@@ -21,7 +21,8 @@ import * as Permissions from 'expo-permissions';
 import AppLoading from 'expo-app-loading';
 
 
-import {useDimensions, useDeviceOrientation} from '@react-native-community/hooks'
+import {useDimensions, useDeviceOrientation} from '@react-native-community/hooks';
+import {navigationRef} from './app/navigation/rootNavigation';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import ViewImageScreen from './app/screens/ViewImageScreen';
 import Button from './app/components/AppButton';
@@ -138,10 +139,11 @@ export default function App() {
   }
 
   
+  
   return (
     <AuthContext.Provider value={{user, setUser}}>
       <OfflineNotice/>
-      <NavigationContainer theme={navigationTheme}>
+      <NavigationContainer theme={navigationTheme} ref={navigationRef}>
         {user? <AppNavigator/> : <AuthNavigator/>}
       </NavigationContainer>
     </AuthContext.Provider>

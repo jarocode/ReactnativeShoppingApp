@@ -1,36 +1,17 @@
-import React, {useEffect} from 'react'
+import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
-import expoPushTokensApi from '../api/expoPushTokens';
 import ListEditScreen from '../screens/ListEditScreen';
 import FeedNavigator from './FeedNavigator';
 import AccountNavigator from './AccountNavigator';
 import NewListingButton from './NewListingButton';
+import useNotifications from '../hooks/useNotifications';
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
-
-    useEffect(() => {
-       registerForPushNotifications();
-    })
-    
-    const registerForPushNotifications = async () => {
-       try {
-            const permission = await  Permissions.askAsync(Permissions.NOTIFICATIONS);
-            if(!permission.granted) return;
-    
-            const token  = await Notifications.getExpoPushTokenAsync();
-            expoPushTokensApi.register(token.data);
-            console.log(token);
-       } catch (error) {
-           console.log('Error getting a push token', error);
-       }
-    }
-    
+    useNotifications();
     return (
     <Tab.Navigator>
         <Tab.Screen 
