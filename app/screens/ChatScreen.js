@@ -1,15 +1,26 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import MessageLabel from '../components/MessageLabel';
+import Screen from '../components/Screen';
+import colors from '../config/colors';
 
 const ChatScreen = () => {
  return (
-   <View style={styles.Container}></View>
+   <Screen style={styles.screen}>
+     <View style={styles.container}>
+      <MessageLabel alignItems="flex-start"/>
+      <MessageLabel alignItems="flex-end"/>
+   </View>
+   </Screen>
  )
 }
 export default ChatScreen;
 
 const styles = StyleSheet.create({
- Container: {
-
- }
+  container: {
+    marginVertical: 30
+  },
+  screen: {
+      backgroundColor: colors.light
+  }
 });

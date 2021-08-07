@@ -6,8 +6,9 @@ import AppText from '../components/AppText';
 import colors from '../config/colors';
 import ListItem from '../components/ListItem';
 import AppButton from '../components/AppButton';
+import Label from '../components/Label';
 
-const ListingDetailsScreen = ({route}) => {
+const ListingDetailsScreen = ({route, navigation}) => {
     const listing = route.params
     return (
         <View>
@@ -26,8 +27,14 @@ const ListingDetailsScreen = ({route}) => {
                     image={require('../assets/mosh.jpg')}
                     title="uchman jaroslaw"
                     subTitle="10 listings"/>
-                    <AppButton title="Show contact" icon="phone"/>
-                    <AppButton title="Start chat" icon="chat"/>
+                    <View style={styles.labelContainer}>
+                        <Label 
+                            backgroundColor={colors.secondary} 
+                            name="chat"  
+                            size={50} 
+                            onPress={() => navigation.navigate('ChatScreen')}/>
+                        <Label backgroundColor={colors.secondary} name="phone"  size={50}/>
+                    </View>
                 </View>
             </View>
           </View>
@@ -55,6 +62,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         marginVertical: 10
+    },
+
+    labelContainer: {
+        marginRight: 200,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around'
     },
 
     title: {

@@ -7,9 +7,9 @@ import AppButton from '../components/AppButton';
 function WelcomeScreen({navigation}) {
     return (
         <ImageBackground 
-        source={BackgroundImg} 
-        style={styles.background}
-        blurRadius={10}
+            source={BackgroundImg} 
+            style={styles.background}
+            blurRadius={10}
         >
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={Logo}/>
