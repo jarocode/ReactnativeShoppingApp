@@ -9,6 +9,7 @@ const MessageLabel = ({alignItems}) => {
      <View style={styles.chat}>
         <AppText style={styles.text}>hello uchman!</AppText>
      </View>
+     <AppText style={styles.time}>06:34pm</AppText>
    </View>
  )
 }
@@ -31,5 +32,10 @@ const styles = StyleSheet.create({
     text: {
         color: colors.white,
         textAlign: 'center'
+    },
+    time: {
+      color: colors.medium,
+      marginVertical: 5,
+      fontSize: 16
     }
 });

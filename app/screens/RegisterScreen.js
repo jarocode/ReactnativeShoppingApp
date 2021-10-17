@@ -11,7 +11,7 @@ import useApi from '../hooks/useApi';
 import ActivityIndicator from '../components/ActivityIndicator';
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required(),
+    username: Yup.string().required(),
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().min(4).matches()
 });
@@ -24,7 +24,7 @@ const RegisterScreen = () => {
     const handleSubmit = async (userInfo) => {
         try {
             const result = await registerApi.request(userInfo);
-
+                
             if(!result.ok){
                 console.log(result.ok);
                 if(result.data) setError(result.data.error);
@@ -50,7 +50,7 @@ const RegisterScreen = () => {
             <Screen style={styles.container}>
             
                 <AppForm
-                    initialValues={{ name: "" , email: '', password: '' }}
+                    initialValues={{ username: "" , email: '', password: '' }}
                     onSubmit={handleSubmit}
                     validationSchema={validationSchema}
                 >
@@ -58,9 +58,9 @@ const RegisterScreen = () => {
                     <AppFormField
                         autoCapitalize="none"
                         autoCorrect={false}
-                        icon="profile"
-                        placeholder="Name"
-                        name="name"
+                        icon="user"
+                        placeholder="Username"
+                        name="username"
                         textContentType="text"
                         />
                     <AppFormField
